@@ -20,11 +20,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <div class="wrapper">
 
   <!-- Navbar -->
-    @include('layout.navbar')
+    @include('layouts.navbar')
   <!-- /.navbar -->
 
   <!-- Main Sidebar Container -->
-  @include('layout.sidebar')
+  @include('layouts.sidebar')
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">

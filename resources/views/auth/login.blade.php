@@ -3,7 +3,7 @@
 @section('content')
 <div class="card">
   <div class="card-body login-card-body">
-    <p class="login-box-msg">Giriş yap</p>
+    <p class="login-box-msg">Login</p>
 
     @if ($errors->any())
     <div class="alert alert-danger">
@@ -36,7 +36,7 @@
       <div class="row">
         <div class="col-8">
           <div class="icheck-primary">
-            <input type="checkbox" id="remember" name="remember" value="true">
+            <input type="checkbox" id="remember" name="remember_me" value="true">
             <label for="remember">
               Remember Me
             </label>

@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,12 +13,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
+
 Route::get('/', function () {
-    return view('dashboard')->name('dashboard');
-});
+    return view('dashboard');
+})->middleware(['auth'])->name('dashboard');
 
-Route::view('/login', 'login');
-Route::post('/login',  [UserController::class, 'login'])->name('login');
-
-Route::view('/register', 'register');
-Route::post('/register',  [UserController::class, 'register'])->name('register');
+require __DIR__.'/auth.php';
