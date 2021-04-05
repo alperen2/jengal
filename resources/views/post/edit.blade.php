@@ -41,7 +41,8 @@
                         </ul>
                     </div>
                     @endif
-                    <form action="{{route('post.store')}}" method="POST">
+                    <form action="{{route('post.update', $post->id)}}" method="POST">
+                        @method('put')
                         @csrf
                         <div class="form-group">
                             <label for="inputName">Title</label>
@@ -80,11 +81,13 @@
                                 <div class="control-group">
                                     <label for="select-beast">Tags</label>
                                     <select id="select-beast" class="selectize" placeholder="Select tags" name="tags[]" multiple>
-                                        <option value="">Select a person...</option>
-                                        <option value="4">Thomas Edison</option>
-                                        <option value="1">Nikola</option>
-                                        <option value="3">Nikola Tesla</option>
-                                        <option value="5">Arnold Schwarzenegger</option>
+                                        @foreach($tags as $tag)
+                                                @if(in_array($tag->id, json_decode($post['tags'], true)))
+                                                    <option selected value="{{$tag->name}}">{{$tag->name}}</option>
+                                                @else
+                                                    <option value="{{$tag->name}}">{{$tag->name}}</option>
+                                                @endif
+                                         @endforeach
                                     </select>
                                 </div>
                             </div>

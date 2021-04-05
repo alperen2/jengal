@@ -20,7 +20,6 @@
 
 <!-- Main content -->
 <section class="content">
-
     <!-- Default box -->
     <div class="card">
         <div class="card-header">
@@ -34,24 +33,25 @@
                 @endif
             </div>
         </div>
-        <div class="card-body p-0">
-            <table class="table table-striped projects">
+        <div class="card-body p-3">
+            <table class="table table-striped projects" id="postTable">
                 <thead>
                     <tr>
-                        <th style="width: 20%">
-                            Project Name
-                        </th>
-                        <th style="width: 30%">
-                            Team Members
+                        <th>
+                            Title
                         </th>
                         <th>
-                            Project Progress
+                            Tags
                         </th>
-                        <th style="width: 8%" class="text-center">
-                            Status
+                        @if(Route::is('post.index'))
+                            <th>
+                                User Name
+                            </th>
+                        @endif
+                        <th>
+                            Price range
                         </th>
-                        <th style="width: 20%">
-                        </th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -61,24 +61,19 @@
                             {{$post->title}}
                         </td>
                         <td>
-                            {{$post->tags}}
+                            @foreach($post->getTagsName() as $tag)
+                                <button class="btn btn-primary btn-xs">{{$tag}}</button>
+                            @endforeach
                         </td>
-                        <td class="project_progress">
-                            <div class="progress progress-sm">
-                                <div class="progress-bar bg-green" role="progressbar" aria-valuenow="57" aria-valuemin="0" aria-valuemax="100" style="width: 57%">
-                                </div>
-                            </div>
-                            <small>
-                                57% Complete
-                            </small>
-                        </td>
-                        <td class="project-state">
-                            <span class="badge badge-success">Success</span>
+                        @if(Route::is('post.index'))
+                            <td>{{ $post->getUser->name }}</td>
+                        @endif
+                        <td>
+                           {{$post->minPrice}}$ - {{$post->maxPrice}}$
                         </td>
                         <td class="project-actions text-right">
                             <a class="btn btn-primary btn-sm" href="#">
-                                <i class="fas fa-folder">
-                                </i>
+                                <i class="fas fa-folder"></i>
                                 View
                             </a>
                             @if(Route::is('my_posts'))
@@ -93,6 +88,9 @@
                     @endforeach
                 </tbody>
             </table>
+            <div class="float-right mt-4 mr-4">
+                {{ $posts->links() }}
+            </div>
         </div>
         <!-- /.card-body -->
     </div>

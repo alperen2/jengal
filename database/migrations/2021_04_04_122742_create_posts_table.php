@@ -16,7 +16,7 @@ class CreatePostsTable extends Migration
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->text('detail');
+            $table->longText('detail');
             $table->float('minPrice');
             $table->float('maxPrice');
             $table->json('tags');

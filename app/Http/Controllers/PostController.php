@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\Tags;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\View;
+use App\CustomHelpers;
 
 class PostController extends Controller
 {
@@ -16,10 +18,11 @@ class PostController extends Controller
      */
     public function index()
     {
-        $post = Post::where('user_id','!=', auth()->user()->id)->get();
+
+        $posts = Post::where('user_id', '!=', auth()->user()->id)->paginate(10);
 
         return View::make('post.index', [
-            'posts' => $post,
+            'posts' => $posts,
         ]);
     }
 
@@ -30,7 +33,8 @@ class PostController extends Controller
      */
     public function create()
     {
-        return view('post.create');
+        $tags = Tags::get();
+        return view('post.create', ['tags' => $tags]);
     }
 
     /**
@@ -49,17 +53,17 @@ class PostController extends Controller
             'tags' => ['required'],
         ]);
 
-
         $post = new Post();
 
         $post->title = $validated['title'];
         $post->detail = $validated['detail'];
         $post->minPrice = $validated['minPrice'];
         $post->maxPrice = $validated['maxPrice'];
-        $post->tags = json_encode($validated['tags']);
+        $post->tags = CustomHelpers::addTagIfNotExist($validated['tags']);
         $post->user_id = auth()->user()->id;
 
         $post->save();
+
         return redirect()->route("my_posts");
     }
 
@@ -71,7 +75,8 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        return view('post.index')->with('posts', $post);
+
+        return view::make('post.edit', ['post' => $post]);
     }
 
     /**
@@ -82,7 +87,11 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        return view('post.edit')->with('post', $post);
+        $tags = Tags::all();
+        return view::make('post.edit', [
+            'post' => $post,
+            'tags' => $tags
+        ]);
     }
 
     /**
@@ -94,7 +103,25 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
-        //
+        $validated  = $request->validate([
+            'title' => ['required', 'max:255'],
+            'detail' => ['required', 'min:1'],
+            'minPrice' => ['required'],
+            'maxPrice' => ['required'],
+            'tags' => ['required'],
+        ]);
+
+
+        $post->title = $validated['title'];
+        $post->detail = $validated['detail'];
+        $post->minPrice = $validated['minPrice'];
+        $post->maxPrice = $validated['maxPrice'];
+        $post->tags = CustomHelpers::addTagIfNotExist($validated['tags']);
+        $post->user_id = auth()->user()->id;
+
+        $post->save();
+
+        return redirect()->route("my_posts");
     }
 
     /**

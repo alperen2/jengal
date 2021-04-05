@@ -76,11 +76,9 @@
                                 <div class="control-group">
                                     <label for="select-beast">Tags</label>
                                     <select id="select-beast" class="selectize" placeholder="Select tags" name="tags[]" multiple>
-                                        <option value="">Select a person...</option>
-                                        <option value="4">Thomas Edison</option>
-                                        <option value="1">Nikola</option>
-                                        <option value="3">Nikola Tesla</option>
-                                        <option value="5">Arnold Schwarzenegger</option>
+                                    @foreach($tags as $tag)
+                                        <option value="{{$tag->name}}">{{$tag->name}}</option>
+                                    @endforeach
                                     </select>
                                 </div>
                             </div>

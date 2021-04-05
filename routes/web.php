@@ -21,7 +21,7 @@ Route::middleware(['auth'])->group(function () {
     Route::view('/', 'dashboard')->name('dashboard');
 
     Route::get('/my-posts', function () {
-        $posts = Post::where('user_id', auth()->user()->id)->get();
+        $posts = Post::where('user_id', auth()->user()->id)->paginate(10);
         return View::make('post.index', [
             "posts" => $posts,
         ]);
