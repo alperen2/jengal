@@ -19,7 +19,9 @@ class CreatePostsTable extends Migration
             $table->text('detail');
             $table->float('minPrice');
             $table->float('maxPrice');
-            $table->json('tags')->nullable();
+            $table->json('tags');
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
         });
     }
