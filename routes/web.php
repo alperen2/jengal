@@ -1,7 +1,11 @@
 <?php
 
+use App\Http\Controllers\OfferController;
+use App\Http\Controllers\PostController;
+use App\Models\Post;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-
+use Illuminate\Support\Facades\View;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -14,9 +18,22 @@ use Illuminate\Support\Facades\Route;
 */
 
 
+Route::middleware(['auth'])->group(function () {
+    Route::view('/', 'dashboard')->name('dashboard');
 
-Route::get('/', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
+    Route::get('/my-posts', function () {
+        $posts = Post::where('user_id', auth()->user()->id)->paginate(10);
+        return View::make('post.index', [
+            "posts" => $posts,
+        ]);
+    })->name('my.posts');
 
-require __DIR__.'/auth.php';
+    Route::resource('post', PostController::class);
+
+    Route::post('/post/{id}/offer', [OfferController::class, 'create'])->name('offer');
+    Route::get('/post/{id}/offers', [OfferController::class, 'index'])->name('my.post.offers');
+    Route::get('/offer/{id}', [OfferController::class, 'detail'])->name('offer.detail');
+});
+
+
+require __DIR__ . '/auth.php';
