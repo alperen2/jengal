@@ -23,7 +23,7 @@ class PostFactory extends Factory
     {
         return [
             'title' => $this->faker->sentence(3),
-            'detail' => $this->faker->sentence(10),
+            'detail' => $this->faker->sentence(200),
             'minPrice' => $this->faker->biasedNumberBetween(1,10),
             'maxPrice' => $this->faker->biasedNumberBetween(11,20),
             'tags' => json_encode([$this->faker->biasedNumberBetween(1,4),$this->faker->biasedNumberBetween(1,4),$this->faker->biasedNumberBetween(1,4)]),

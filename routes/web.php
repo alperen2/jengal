@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\OfferController;
 use App\Http\Controllers\PostController;
 use App\Models\Post;
 use Illuminate\Support\Facades\Auth;
@@ -25,9 +26,13 @@ Route::middleware(['auth'])->group(function () {
         return View::make('post.index', [
             "posts" => $posts,
         ]);
-    })->name('my_posts');
+    })->name('my.posts');
 
     Route::resource('post', PostController::class);
+
+    Route::post('/post/{id}/offer', [OfferController::class, 'create'])->name('offer');
+    Route::get('/post/{id}/offers', [OfferController::class, 'index'])->name('my.post.offers');
+    Route::get('/offer/{id}', [OfferController::class, 'detail'])->name('offer.detail');
 });
 
 

@@ -26,7 +26,7 @@
             <h3 class="card-title">All Job Postings</h3>
 
             <div class="card-tools">
-                @if (Route::current()->getName() == 'my_posts')
+                @if (Route::current()->getName() == 'my.posts')
                 <a href="{{route('post.create')}}" class="btn btn-primary btn-sm">
                     <i class="fas fa-folder-plus"></i> Create a post
                 </a>
@@ -72,11 +72,11 @@
                            {{$post->minPrice}}$ - {{$post->maxPrice}}$
                         </td>
                         <td class="project-actions text-right">
-                            <a class="btn btn-primary btn-sm" href="#">
+                            <a class="btn btn-primary btn-sm" href="{{route('post.show', $post->id)}}">
                                 <i class="fas fa-folder"></i>
                                 View
                             </a>
-                            @if(Route::is('my_posts'))
+                            @if(Route::is('my.posts'))
                             <a class="btn btn-info btn-sm" href="{{route('post.edit', $post->id)}}">
                                 <i class="fas fa-pencil-alt">
                                 </i>

@@ -28,7 +28,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="{{route('my_posts')}}" class="nav-link">
+            <a href="{{route('my.posts')}}" class="nav-link">
             <i class="nav-icon far fa-newspaper"></i>
               <p>My posts</p>
             </a>

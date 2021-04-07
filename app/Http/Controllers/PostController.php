@@ -8,6 +8,9 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\View;
 use App\CustomHelpers;
+use App\Models\Offer;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 
 class PostController extends Controller
 {
@@ -64,7 +67,7 @@ class PostController extends Controller
 
         $post->save();
 
-        return redirect()->route("my_posts");
+        return redirect()->route("my.posts");
     }
 
     /**
@@ -75,8 +78,15 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-
-        return view::make('post.edit', ['post' => $post]);
+        $offers = Offer::where('post_id', $post->id)->get();
+        $tags = Tags::all();
+        return view::make('post.show', [
+            'post' => $post,
+            'tags' => $tags,
+            'offerCount' => $offers->count(),
+            'hasOffer' => $offers->where('user_id', auth()->user()->id)->first(),
+            'avgPrice' => $offers->avg('price'),
+        ]);
     }
 
     /**
@@ -87,6 +97,9 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
+        if (!Gate::allows('update-post', $post)) {
+            abort(403);
+        }
         $tags = Tags::all();
         return view::make('post.edit', [
             'post' => $post,
@@ -103,6 +116,9 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
+        if (!Gate::allows('update-post', $post)) {
+            abort(403);
+        }
         $validated  = $request->validate([
             'title' => ['required', 'max:255'],
             'detail' => ['required', 'min:1'],
@@ -121,7 +137,7 @@ class PostController extends Controller
 
         $post->save();
 
-        return redirect()->route("my_posts");
+        return redirect()->route("my.posts");
     }
 
     /**
@@ -132,6 +148,10 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        //
+        if (!Gate::allows('update-post', $post)) {
+            abort(403);
+        }
+        $post->delete();
+        return redirect()->route('my.posts');
     }
 }
