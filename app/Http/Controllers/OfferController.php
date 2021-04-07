@@ -6,7 +6,6 @@ use App\Models\Message;
 use App\Models\Offer;
 use App\Models\Post;
 use Illuminate\Http\Request;
-use Illuminate\Mail\Events\MessageSent;
 
 class OfferController extends Controller
 {

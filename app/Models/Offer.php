@@ -13,4 +13,9 @@ class Offer extends Model
     {
         return $this->hasOne(User::class, 'id', 'user_id');
     }
+
+    public function getMessage()
+    {
+        return $this->hasOne(Message::class, 'id', 'message_id');
+    }
 }
